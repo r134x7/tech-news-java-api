@@ -19,7 +19,12 @@ public class User {
     @Transient
     boolean loggedIn;
 
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<String> posts;
+    // using FetchType.Eager GETs immediately, only a single list can be Eager...
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<String> votes;
+    // using FetchType.LAZY to resolve multiple bags exception, Lazy gets information as needed
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<String> comments;
 }
