@@ -1,5 +1,6 @@
 package com.technews.controller;
 
+import com.technews.model.Comment;
 import com.technews.model.Post;
 import com.technews.model.User;
 import com.technews.repository.CommentRepository;
@@ -134,5 +135,39 @@ public class TechNewsController {
         }
     }
 
-    
+    @PostMapping("/comments")
+    public String createCommentCommentsPage(@ModelAttribute Comment comment, Model model, HttpServletRequest request) {
+
+        if (comment.getCommentText().isEmpty() || comment.getCommentText().equals(null)) {
+            return "redirect:/singlePostEmptyComment/" + comment.getPostId();
+        } else {
+            if (request.getSession(false) != null) {
+                User sessionUser = (User) request.getSession().getAttribute("SESSION_USER");
+                comment.setUserId(sessionUser.getId());
+                commentRepository.save(comment);
+                return "redirect:/post/" + comment.getPostId();
+            } else {
+                return "login";
+            }
+        }
+    }
+
+    @PostMapping("/comments/edit")
+    public String createCommentEditPage(@ModelAttribute Comment comment, HttpServletRequest request) {
+
+        if (comment.getCommentText().equals("") || comment.getCommentText().equals(null)) {
+            return "redirect:/editPostEmptyComment/" + comment.getPostId();
+        } else {
+            if (request.getSession(false) != null) {
+                User sessionUser = (User) request.getSession().getAttribute("SESSION_USER");
+                comment.setUserId(sessionUser.getId());
+                commentRepository.save(comment);
+
+                return "redirect:/dashboard/edit/" + comment.getPostId();
+            } else {
+                return "redirect:/login";
+            }
+        }
+
+    }
 }
