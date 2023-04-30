@@ -35,8 +35,7 @@
 
   # Deployed App  
 
-  Link to deployed app on Heroku: https://rocky-waters-09134.herokuapp.com/
-  
+  This app is no longer hosted on Heroku. 
 
   # Tests
     
